@@ -2,10 +2,20 @@ const imagesWrapper = document.querySelector('.images');
 const loadMoreBtn = document.querySelector('.load-more');
 const searchInput = document.querySelector('.search-box input');
 
-const apiKey = "A3V9J66Wq8vD4mzygAQswTL95xwo8BdFyVkpDY1ZUcziZuXVGtDRnpz9";
+// const apiKey = "A3V9J66Wq8vD4mzygAQswTL95xwo8BdFyVkpDY1ZUcziZuXVGtDRnpz9";
+const apiKey = 'Jy9s3wlVLF3FLYU47PlOo9gGDAC50C6jta4Wl8eZwLUSei8mHu6q0vZt';
 const perPage = 15;
 let currentPage = 1;
 let searchTerm = null;
+
+const downloadImg = (imgURL) => {
+   fetch(imgURL).then(res => res.blob()).then(file => {
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(file);
+      a.download = new Date().getTime();
+      a.click();
+   }).catch(() => alert('Failed to download image!'));
+}
 
 const generateHTML = (images) => {
    imagesWrapper.innerHTML += images.map(img => 
@@ -16,7 +26,7 @@ const generateHTML = (images) => {
                   <i class="uil uil-camera"></i>
                   <span>${img.photographer}</span>
                </div>
-               <button>
+               <button onclick="downloadImg('${img.src.large2x}')">
                   <i class="uil uil-import"></i>
                </button>
             </div>
