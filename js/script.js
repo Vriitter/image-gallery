@@ -1,12 +1,16 @@
 const imagesWrapper = document.querySelector('.images');
 const loadMoreBtn = document.querySelector('.load-more');
 const searchInput = document.querySelector('.search-box input');
+const searchIcon = document.querySelector('.search-box i');
+const clearSearchBtn = document.querySelector('.clear-search'); 
 const lightBox = document.querySelector('.lightbox');
 const closeBtn = lightBox.querySelector('.uil-times');
 const downloadImgBtn = lightBox.querySelector('.uil-import');
 
-const apiKey = "A3V9J66Wq8vD4mzygAQswTL95xwo8BdFyVkpDY1ZUcziZuXVGtDRnpz9";
+
+// const apiKey = "A3V9J66Wq8vD4mzygAQswTL95xwo8BdFyVkpDY1ZUcziZuXVGtDRnpz9";
 // const apiKey = 'Jy9s3wlVLF3FLYU47PlOo9gGDAC50C6jta4Wl8eZwLUSei8mHu6q0vZt';
+const apiKey = 'b6P1umzCwQskV2QgLpAi7XbNhpQjJKvcA5014aPtGzQBtu0DhiXKH3ML';
 const perPage = 15;
 let currentPage = 1;
 let searchTerm = null;
@@ -63,15 +67,23 @@ const getImages = (apiURL) => {
 }
 
 const loadMoreImages = () => {
+   // currentPage++;
+   // let apiURL = `https://api.pexels.com/v1/curated?page=${currentPage}per_page=${perPage}`;
+   // apiURL = searchTerm ? `https://api.pexels.com/v1/curated?page=${currentPage}per_page=${perPage}` : apiURL;
+   // getImages(apiURL);
    currentPage++;
-   let apiURL = `https://api.pexels.com/v1/curated?page=${currentPage}per_page=${perPage}`;
-   apiURL = searchTerm ? `https://api.pexels.com/v1/curated?page=${currentPage}per_page=${perPage}` : apiURL;
+   let apiURL;
+   if (searchTerm) {
+      apiURL = `https://api.pexels.com/v1/search?query=${searchTerm}&page=${currentPage}&per_page=${perPage}`;
+   } else {
+      apiURL = `https://api.pexels.com/v1/curated?page=${currentPage}&per_page=${perPage}`;
+   }
    getImages(apiURL);
 }
 
 const loadSearchImages = (e) => {
    if(e.target.value === '') return searchTerm = null;
-   if(e.key === 'Enter') {
+   if(e.key === 'Enter' || e.type === 'click') {
       console.log('print')
       currentPage = 1;
       searchTerm = e.target.value;
@@ -80,8 +92,20 @@ const loadSearchImages = (e) => {
    }
 }
 
+searchInput.addEventListener('input', () => {
+   clearSearchBtn.style.display = searchInput.value ? 'inline-block' : 'none'; 
+});
+
+clearSearchBtn.addEventListener('click', () => {
+   searchInput.value = ''; 
+   searchTerm = null; 
+   clearSearchBtn.style.display = 'none'; 
+});
+
 getImages(`https://api.pexels.com/v1/curated?page=${currentPage}per_page=${perPage}`);
+searchInput.focus(); 
 loadMoreBtn.addEventListener('click', loadMoreImages);
 searchInput.addEventListener('keyup', loadSearchImages);
+searchIcon.addEventListener('click', loadSearchImages);
 closeBtn.addEventListener('click', hideLightbox);
 downloadImgBtn.addEventListener('click', (e) => downloadImg(e.target.dataset.img));
