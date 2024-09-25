@@ -1,9 +1,11 @@
 const imagesWrapper = document.querySelector('.images');
 const loadMoreBtn = document.querySelector('.load-more');
 const searchInput = document.querySelector('.search-box input');
+const lightBox = document.querySelector('.lightbox');
+const closeBtn = lightBox.querySelector('.uil-times');
 
-// const apiKey = "A3V9J66Wq8vD4mzygAQswTL95xwo8BdFyVkpDY1ZUcziZuXVGtDRnpz9";
-const apiKey = 'Jy9s3wlVLF3FLYU47PlOo9gGDAC50C6jta4Wl8eZwLUSei8mHu6q0vZt';
+const apiKey = "A3V9J66Wq8vD4mzygAQswTL95xwo8BdFyVkpDY1ZUcziZuXVGtDRnpz9";
+// const apiKey = 'Jy9s3wlVLF3FLYU47PlOo9gGDAC50C6jta4Wl8eZwLUSei8mHu6q0vZt';
 const perPage = 15;
 let currentPage = 1;
 let searchTerm = null;
@@ -17,9 +19,21 @@ const downloadImg = (imgURL) => {
    }).catch(() => alert('Failed to download image!'));
 }
 
+const showLightbox = (name, img) => {
+   lightBox.querySelector('img').src = img;
+   lightBox.querySelector('span').innerText = name;
+   lightBox.classList.add('show');
+   document.body.style.overflow = 'hidden';
+}
+
+const hideLightbox = () => {
+   lightBox.classList.remove('show');
+   document.body.style.overflow = 'auto';
+}
+
 const generateHTML = (images) => {
    imagesWrapper.innerHTML += images.map(img => 
-      `<li class="card">
+      `<li class="card" onclick="showLightbox('${img.photographer}', '${img.src.large2x}')">
             <img src="${img.src.large2x}" alt="img">
             <div class="details">
                <div class="photographer">
@@ -67,3 +81,4 @@ const loadSearchImages = (e) => {
 getImages(`https://api.pexels.com/v1/curated?page=${currentPage}per_page=${perPage}`);
 loadMoreBtn.addEventListener('click', loadMoreImages);
 searchInput.addEventListener('keyup', loadSearchImages);
+closeBtn.addEventListener('click', hideLightbox);
