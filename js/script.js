@@ -8,8 +8,9 @@ const closeBtn = lightBox.querySelector('.uil-times');
 const downloadImgBtn = lightBox.querySelector('.uil-import');
 
 
-const apiKey = "A3V9J66Wq8vD4mzygAQswTL95xwo8BdFyVkpDY1ZUcziZuXVGtDRnpz9";
+// const apiKey = "A3V9J66Wq8vD4mzygAQswTL95xwo8BdFyVkpDY1ZUcziZuXVGtDRnpz9";
 // const apiKey = 'Jy9s3wlVLF3FLYU47PlOo9gGDAC50C6jta4Wl8eZwLUSei8mHu6q0vZt';
+const apiKey = 'b6P1umzCwQskV2QgLpAi7XbNhpQjJKvcA5014aPtGzQBtu0DhiXKH3ML';
 const perPage = 15;
 let currentPage = 1;
 let searchTerm = null;
@@ -66,9 +67,17 @@ const getImages = (apiURL) => {
 }
 
 const loadMoreImages = () => {
+   // currentPage++;
+   // let apiURL = `https://api.pexels.com/v1/curated?page=${currentPage}per_page=${perPage}`;
+   // apiURL = searchTerm ? `https://api.pexels.com/v1/curated?page=${currentPage}per_page=${perPage}` : apiURL;
+   // getImages(apiURL);
    currentPage++;
-   let apiURL = `https://api.pexels.com/v1/curated?page=${currentPage}per_page=${perPage}`;
-   apiURL = searchTerm ? `https://api.pexels.com/v1/curated?page=${currentPage}per_page=${perPage}` : apiURL;
+   let apiURL;
+   if (searchTerm) {
+      apiURL = `https://api.pexels.com/v1/search?query=${searchTerm}&page=${currentPage}&per_page=${perPage}`;
+   } else {
+      apiURL = `https://api.pexels.com/v1/curated?page=${currentPage}&per_page=${perPage}`;
+   }
    getImages(apiURL);
 }
 
