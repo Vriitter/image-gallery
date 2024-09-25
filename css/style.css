@@ -265,7 +265,7 @@ footer {
    display: flex;
    align-items: center;
    justify-content: space-between;
-   font-size: 20px;
+   font-size: 1rem;
    color: #000;
    background: #e9e8e8;
 }
@@ -273,4 +273,17 @@ footer {
 .footer img {
    width: 40px;
    height: 40px;
+}
+
+@media (max-width: 700px) {
+   .search h1 {
+      font-size: 2rem;
+   }
+   .search p {
+      font-size: 1rem;
+      margin-top: 8px;
+   }
+   .search .search-box {
+      margin: 20px 0;
+   }
 }
